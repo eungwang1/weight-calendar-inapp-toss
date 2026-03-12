@@ -2,3 +2,10 @@
   flex: 1;
   padding-bottom: 40px;
 }
+
+.periodRange {
+  text-align: center;
+  font-size: 13px;
+  color: #8b95a1;
+  margin-bottom: 8px;
+}

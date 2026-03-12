@@ -1,25 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@toss/tds-mobile';
 import type { DayRecord } from '../types';
 import { getDayLabel } from '../utils/date';
 import { usePhotoPicker } from '../hooks/usePhotoPicker';
-import { haptic } from '../utils/haptic';
 import style from './DayDetail.module.css';
 
 interface Props {
   dateStr: string;
   dayRecord?: DayRecord;
-  onEdit: (dateStr: string) => void;
-  onAdd: (dateStr: string) => void;
 }
 
-function EntryCard({
-  entry,
-  onClick,
-}: {
-  entry: NonNullable<DayRecord['morning']>;
-  onClick: () => void;
-}) {
+function EntryCard({ entry }: { entry: NonNullable<DayRecord['morning']> }) {
   const { loadPhoto } = usePhotoPicker();
   const [photos, setPhotos] = useState<Record<string, string>>({});
 
@@ -35,7 +25,7 @@ function EntryCard({
   const isMorning = entry.timeOfDay === 'morning';
 
   return (
-    <div className={style.entryCard} onClick={onClick}>
+    <div className={style.entryCard}>
       <div className={style.entryTop}>
         <span className={`${style.timeLabel} ${isMorning ? style.morning : style.evening}`}>
           {isMorning ? '아침' : '저녁'}
@@ -60,7 +50,7 @@ function EntryCard({
   );
 }
 
-export function DayDetail({ dateStr, dayRecord, onEdit, onAdd }: Props) {
+export function DayDetail({ dateStr, dayRecord }: Props) {
   const dateParts = dateStr.split('-');
   const m = parseInt(dateParts[1]!, 10);
   const d = parseInt(dateParts[2]!, 10);
@@ -76,58 +66,17 @@ export function DayDetail({ dateStr, dayRecord, onEdit, onAdd }: Props) {
         <span className={style.dateLabel}>
           {m}월 {d}일 {dayLabel}요일
         </span>
-        {hasAny && (
-          <Button
-            color="dark"
-            variant="weak"
-            size="small"
-            onClick={() => {
-              haptic('tap');
-              onEdit(dateStr);
-            }}
-          >
-            수정
-          </Button>
-        )}
       </div>
 
       {!hasAny ? (
         <div className={style.empty}>
           <div>기록이 없어요</div>
-          <div style={{ marginTop: 12 }}>
-            <Button
-              color="primary"
-              size="medium"
-              onClick={() => {
-                haptic('softMedium');
-                onAdd(dateStr);
-              }}
-            >
-              기록하기
-            </Button>
-          </div>
         </div>
       ) : (
         <div className={style.entries}>
-          {dayRecord?.morning && (
-            <EntryCard
-              entry={dayRecord.morning}
-              onClick={() => {
-                haptic('tap');
-                onEdit(dateStr);
-              }}
-            />
-          )}
+          {dayRecord?.morning && <EntryCard entry={dayRecord.morning} />}
           {hasMorning && hasEvening && <div className={style.divider} />}
-          {dayRecord?.evening && (
-            <EntryCard
-              entry={dayRecord.evening}
-              onClick={() => {
-                haptic('tap');
-                onEdit(dateStr);
-              }}
-            />
-          )}
+          {dayRecord?.evening && <EntryCard entry={dayRecord.evening} />}
         </div>
       )}
     </div>

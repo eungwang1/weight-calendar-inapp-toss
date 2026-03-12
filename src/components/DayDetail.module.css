@@ -92,6 +92,27 @@
   justify-content: space-between;
 }
 
+.entryRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deleteBtn {
+  font-size: 13px;
+  font-weight: 600;
+  color: #b0b8c1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.deleteBtn:active {
+  color: #f04452;
+}
+
 .timeLabel {
   font-size: 12px;
   font-weight: 700;

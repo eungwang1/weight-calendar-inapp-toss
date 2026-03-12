@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BottomSheet, Button } from '@toss/tds-mobile';
 import type { DayRecord, WeightEntry } from '../types';
 import { getDayLabel } from '../utils/date';
@@ -15,28 +15,32 @@ interface Props {
   onClose: () => void;
 }
 
+interface DraftEntry {
+  weight: string;
+  memo: string;
+  photoKeys: string[];
+}
+
 export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose }: Props) {
   useBackHandler(true, onClose);
 
   const [timeOfDay, setTimeOfDay] = useState<'morning' | 'evening'>('morning');
-  const [weight, setWeight] = useState('');
-  const [memo, setMemo] = useState('');
-  const [photoKeys, setPhotoKeys] = useState<string[]>([]);
+  const [draft, setDraft] = useState<Record<'morning' | 'evening', DraftEntry>>(() => {
+    const init = (tod: 'morning' | 'evening'): DraftEntry => {
+      const e = dayRecord?.[tod];
+      return e
+        ? { weight: e.weight.toString(), memo: e.memo, photoKeys: e.photoKeys }
+        : { weight: '', memo: '', photoKeys: [] };
+    };
+    return { morning: init('morning'), evening: init('evening') };
+  });
 
+  const current = draft[timeOfDay];
   const existing = dayRecord?.[timeOfDay];
   const isEditing = !!existing;
 
-  useEffect(() => {
-    if (existing) {
-      setWeight(existing.weight.toString());
-      setMemo(existing.memo);
-      setPhotoKeys(existing.photoKeys);
-    } else {
-      setWeight('');
-      setMemo('');
-      setPhotoKeys([]);
-    }
-  }, [timeOfDay, existing?.id]);
+  const update = (patch: Partial<DraftEntry>) =>
+    setDraft((prev) => ({ ...prev, [timeOfDay]: { ...prev[timeOfDay], ...patch } }));
 
   const dateParts = dateStr.split('-');
   const m = parseInt(dateParts[1]!, 10);
@@ -44,34 +48,44 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
   const dayLabel = getDayLabel(dateStr);
 
   const adjust = (delta: number) => {
-    const current = parseFloat(weight) || 0;
-    const next = Math.max(0, current + delta);
-    setWeight(next.toFixed(1));
+    const cur = parseFloat(current.weight) || 0;
+    const next = Math.max(0, cur + delta);
+    update({ weight: next.toFixed(1) });
     haptic('tickWeak');
   };
 
-  const handleSave = () => {
-    const w = parseFloat(weight);
-    if (isNaN(w) || w <= 0 || w > 300) return;
+  const handleSave = async () => {
+    const mw = parseFloat(draft.morning.weight);
+    const ew = parseFloat(draft.evening.weight);
+    const hasMorning = !isNaN(mw) && mw > 0 && mw <= 300;
+    const hasEvening = !isNaN(ew) && ew > 0 && ew <= 300;
 
-    onSave(
-      {
-        date: dateStr,
-        timeOfDay,
-        weight: w,
-        memo,
-        photoKeys,
-      },
-      existing?.id
-    );
+    if (!hasMorning && !hasEvening) {
+      haptic('error');
+      return;
+    }
+
+    if (hasMorning) {
+      await onSave(
+        { date: dateStr, timeOfDay: 'morning', weight: mw, memo: draft.morning.memo, photoKeys: draft.morning.photoKeys },
+        dayRecord?.morning?.id
+      );
+    }
+    if (hasEvening) {
+      await onSave(
+        { date: dateStr, timeOfDay: 'evening', weight: ew, memo: draft.evening.memo, photoKeys: draft.evening.photoKeys },
+        dayRecord?.evening?.id
+      );
+    }
+
     haptic('success');
     onClose();
   };
 
   const handleDelete = () => {
     onDelete(dateStr, timeOfDay);
+    update({ weight: '', memo: '', photoKeys: [] });
     haptic('error');
-    onClose();
   };
 
   return (
@@ -81,10 +95,8 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
       header={<BottomSheet.Header>{m}월 {d}일 {dayLabel}요일</BottomSheet.Header>}
       hasTextField
       cta={
-        <BottomSheet.CTA>
-          <Button color="primary" display="full" size="xlarge" onClick={handleSave}>
-            저장하기
-          </Button>
+        <BottomSheet.CTA onClick={handleSave}>
+          저장하기
         </BottomSheet.CTA>
       }
     >
@@ -94,13 +106,13 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
             className={`${style.toggleBtn} ${timeOfDay === 'morning' ? style.morningActive : ''}`}
             onClick={() => setTimeOfDay('morning')}
           >
-            아침
+            아침{draft.morning.weight ? ` · ${draft.morning.weight}kg` : ''}
           </button>
           <button
             className={`${style.toggleBtn} ${timeOfDay === 'evening' ? style.eveningActive : ''}`}
             onClick={() => setTimeOfDay('evening')}
           >
-            저녁
+            저녁{draft.evening.weight ? ` · ${draft.evening.weight}kg` : ''}
           </button>
         </div>
 
@@ -110,8 +122,8 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
               className={style.weightNumber}
               type="number"
               step="0.1"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
+              value={current.weight}
+              onChange={(e) => update({ weight: e.target.value })}
               placeholder="0.0"
             />
             <span className={style.weightUnit}>kg</span>
@@ -130,20 +142,20 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
           <div className={style.memoLabel}>메모</div>
           <textarea
             className={style.memoInput}
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
+            value={current.memo}
+            onChange={(e) => update({ memo: e.target.value })}
             placeholder="메모를 입력하세요"
           />
         </div>
 
         <div className={style.photoSection}>
-          <PhotoGrid photoKeys={photoKeys} onPhotoKeysChange={setPhotoKeys} />
+          <PhotoGrid photoKeys={current.photoKeys} onPhotoKeysChange={(v) => update({ photoKeys: v })} />
         </div>
 
-        {isEditing && (
-          <Button color="danger" variant="weak" display="full" size="large" onClick={handleDelete}>
-            삭제하기
-          </Button>
+        {existing && (
+          <button className={style.deleteBtn} onClick={handleDelete}>
+            이 기록 삭제
+          </button>
         )}
       </div>
     </BottomSheet>

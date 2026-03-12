@@ -9,6 +9,7 @@ interface Props {
   year: number;
   month: number;
   monthData: MonthData;
+  selectedDate: string | null;
   onPrev: () => void;
   onNext: () => void;
   onDateClick: (dateStr: string) => void;
@@ -17,8 +18,10 @@ interface Props {
 const WEEKDAYS = ['월', '화', '수', '목', '금', '토', '일'];
 const SWIPE_THRESHOLD = 50;
 
-export function Calendar({ year, month, monthData, onPrev, onNext, onDateClick }: Props) {
+export function Calendar({ year, month, monthData, selectedDate, onPrev, onNext, onDateClick }: Props) {
   const days = getCalendarDays(year, month);
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   const touchStartX = useRef<number | null>(null);
   const [swipeOffset, setSwipeOffset] = useState(0);
   const [slideClass, setSlideClass] = useState('');
@@ -104,6 +107,8 @@ export function Calendar({ year, month, monthData, onPrev, onNext, onDateClick }
             dateStr={day.dateStr}
             isCurrentMonth={day.isCurrentMonth}
             isToday={day.isToday}
+            isFuture={day.dateStr > todayStr}
+            isSelected={day.dateStr === selectedDate}
             record={monthData[day.dateStr]}
             onClick={onDateClick}
           />

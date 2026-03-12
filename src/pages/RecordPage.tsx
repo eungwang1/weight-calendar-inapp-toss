@@ -14,14 +14,23 @@ export function RecordPage() {
   const { year, month, goNext, goPrev } = useCalendarNavigation();
   const { monthData, saveEntry, deleteEntry, getDayRecord, getAllEntries } =
     useWeightStorage(year, month);
-  const { goal, saveGoal, getProgress } = useGoalWeight();
+  const { goal, goalType, saveGoal, getProgress } = useGoalWeight();
 
-  const [viewingDate, setViewingDate] = useState<string | null>(null);
+  const [viewingDate, setViewingDate] = useState<string | null>(() => {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  });
   const [editingDate, setEditingDate] = useState<string | null>(null);
 
   const entries = getAllEntries();
   const latestWeight = entries.length > 0 ? entries[entries.length - 1]!.weight : null;
   const progress = getProgress(latestWeight);
+
+  const todayStr = (() => {
+    const t = new Date();
+    return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+  })();
+  const isFutureSelected = !!viewingDate && viewingDate > todayStr;
 
   const handleDateClick = (dateStr: string) => {
     haptic('tap');
@@ -30,12 +39,13 @@ export function RecordPage() {
 
   return (
     <div className={style.page}>
-      <GoalBanner goal={goal} progress={progress} onSaveGoal={saveGoal} />
+      <GoalBanner goal={goal} goalType={goalType} progress={progress} onSaveGoal={saveGoal} />
 
       <Calendar
         year={year}
         month={month}
         monthData={monthData}
+        selectedDate={viewingDate}
         onPrev={goPrev}
         onNext={goNext}
         onDateClick={handleDateClick}
@@ -45,26 +55,25 @@ export function RecordPage() {
         <DayDetail
           dateStr={viewingDate}
           dayRecord={getDayRecord(viewingDate)}
-          onEdit={(dateStr) => setEditingDate(dateStr)}
-          onAdd={(dateStr) => setEditingDate(dateStr)}
         />
       )}
 
-      <div className={style.fabContainer}>
-        <Button
-          color="primary"
-          size="large"
-          onClick={() => {
-            haptic('softMedium');
-            const today = new Date();
-            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            setViewingDate(todayStr);
-            setEditingDate(todayStr);
-          }}
-        >
-          + 기록하기
-        </Button>
-      </div>
+      {!isFutureSelected && (
+        <div className={style.fabContainer}>
+          <Button
+            color="primary"
+            size="large"
+            onClick={() => {
+              haptic('softMedium');
+              const targetDate = viewingDate ?? todayStr;
+              setViewingDate(targetDate);
+              setEditingDate(targetDate);
+            }}
+          >
+            + 기록하기
+          </Button>
+        </div>
+      )}
 
       {editingDate && (
         <WeightEntrySheet

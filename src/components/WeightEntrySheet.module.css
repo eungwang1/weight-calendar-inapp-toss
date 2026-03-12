@@ -1,5 +1,5 @@
 .content {
-  padding: 0 4px;
+  padding: 4px 16px;
 }
 
 .toggle {
@@ -14,7 +14,7 @@
   border: 1px solid #e5e8eb;
   border-radius: 10px;
   background: #ffffff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: #8b95a1;
   cursor: pointer;
@@ -119,4 +119,17 @@
 
 .photoSection {
   margin-bottom: 24px;
+}
+
+.deleteBtn {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f04452;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }

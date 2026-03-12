@@ -24,8 +24,9 @@ export function useWeightStorage(year: number, month: number) {
       const now = Date.now();
       const dayKey = entry.date;
 
-      const newData = { ...monthData };
-      const dayRecord: DayRecord = newData[dayKey] ?? {};
+      // 최신 데이터를 storage에서 직접 읽어서 stale closure 방지
+      const current = (await getItem<MonthData>(storageKey)) ?? {};
+      const dayRecord: DayRecord = current[dayKey] ?? {};
 
       const fullEntry: WeightEntry = {
         ...entry,
@@ -35,32 +36,32 @@ export function useWeightStorage(year: number, month: number) {
       };
 
       dayRecord[entry.timeOfDay] = fullEntry;
-      newData[dayKey] = dayRecord;
+      current[dayKey] = dayRecord;
 
-      setMonthData(newData);
-      await setItem(storageKey, newData);
+      await setItem(storageKey, current);
+      setMonthData(current);
       return fullEntry;
     },
-    [monthData, storageKey]
+    [storageKey]
   );
 
   const deleteEntry = useCallback(
     async (dateStr: string, timeOfDay: 'morning' | 'evening') => {
-      const newData = { ...monthData };
-      const dayRecord = newData[dateStr];
+      const current = (await getItem<MonthData>(storageKey)) ?? {};
+      const dayRecord = current[dateStr];
       if (!dayRecord) return;
 
       delete dayRecord[timeOfDay];
       if (!dayRecord.morning && !dayRecord.evening) {
-        delete newData[dateStr];
+        delete current[dateStr];
       } else {
-        newData[dateStr] = dayRecord;
+        current[dateStr] = dayRecord;
       }
 
-      setMonthData(newData);
-      await setItem(storageKey, newData);
+      await setItem(storageKey, current);
+      setMonthData(current);
     },
-    [monthData, storageKey]
+    [storageKey]
   );
 
   const getDayRecord = useCallback(

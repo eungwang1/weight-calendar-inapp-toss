@@ -15,6 +15,10 @@
   transform: scale(0.98);
 }
 
+.bannerCompleted {
+  background-color: #f8f9fa;
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -46,4 +50,91 @@
   background: linear-gradient(90deg, #3182F6, #56a0f5);
   border-radius: 4px;
   transition: width 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* 달성 배너 */
+.completedContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.completedEmoji {
+  font-size: 28px;
+}
+
+.completedText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.completedTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: #191f28;
+}
+
+.completedSub {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7684;
+}
+
+/* 축하 오버레이 */
+.celebrationOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.celebrationCard {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px 28px 28px;
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  animation: scaleIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.celebrationEmoji {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.celebrationTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: #191f28;
+  margin-bottom: 8px;
+}
+
+.celebrationDesc {
+  font-size: 14px;
+  color: #6b7684;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.celebrationActions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }

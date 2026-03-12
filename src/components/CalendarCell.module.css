@@ -15,9 +15,17 @@
   transform: scale(0.95);
 }
 
+.selected {
+  background-color: #f8f9fa;
+}
+
 .otherMonth {
   opacity: 0.25;
   pointer-events: none;
+}
+
+.future {
+  opacity: 0.35;
 }
 
 .dayNumber {
@@ -26,18 +34,27 @@
   color: #4e5968;
   margin-bottom: 4px;
   line-height: 1;
-}
-
-.today .dayNumber {
-  color: #ffffff;
-  background-color: #3182F6;
-  border-radius: 50%;
   width: 26px;
   height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dayCircle {
   font-size: 12px;
+}
+
+.todayCircle {
+  color: #3182F6;
+  background-color: #E8F3FF;
+}
+
+.selectedCircle {
+  color: #ffffff;
+  background-color: #3182F6;
 }
 
 .labels {

@@ -8,21 +8,24 @@ interface Props {
   dateStr: string;
   isCurrentMonth: boolean;
   isToday: boolean;
+  isFuture: boolean;
+  isSelected: boolean;
   record?: DayRecord;
   onClick: (dateStr: string) => void;
 }
 
-export function CalendarCell({ day, dateStr, isCurrentMonth, isToday, record, onClick }: Props) {
+export function CalendarCell({ day, dateStr, isCurrentMonth, isToday, isFuture, isSelected, record, onClick }: Props) {
   return (
     <div
       className={clsx(
         style.cell,
         !isCurrentMonth && style.otherMonth,
-        isToday && style.today
+        isFuture && isCurrentMonth && style.future,
+        isSelected && style.selected
       )}
       onClick={() => { haptic('tap'); onClick(dateStr); }}
     >
-      <span className={style.dayNumber}>{day}</span>
+      <span className={clsx(style.dayNumber, (isToday || isSelected) && style.dayCircle, isSelected ? style.selectedCircle : isToday && style.todayCircle)}>{day}</span>
       <div className={style.labels}>
         {record?.morning && (
           <span className={style.morningLabel}>{record.morning.weight.toFixed(1)}</span>

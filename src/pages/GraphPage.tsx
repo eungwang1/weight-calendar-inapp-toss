@@ -14,19 +14,18 @@ export function GraphPage() {
   const { goal } = useGoalWeight();
 
   const loadEntries = useCallback(async () => {
-    const { start, end } = getDateRangeForPeriod(period);
+    const { start } = getDateRangeForPeriod(period);
     const startStr = format(start, 'yyyy-MM-dd');
-    const endStr = format(end, 'yyyy-MM-dd');
 
-    // Collect all months in range
+    // Collect months from start to current month (and next month for future entries)
+    const now = new Date();
+    const endMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1); // include next month
     const months = new Set<string>();
     const cursor = new Date(start);
-    while (cursor <= end) {
+    while (cursor <= endMonth) {
       months.add(`${cursor.getFullYear()}-${cursor.getMonth() + 1}`);
       cursor.setMonth(cursor.getMonth() + 1);
     }
-    // Include end month
-    months.add(`${end.getFullYear()}-${end.getMonth() + 1}`);
 
     const allEntries: WeightEntry[] = [];
     for (const key of months) {
@@ -35,7 +34,7 @@ export function GraphPage() {
       allEntries.push(...collectEntriesFromMonthData(data));
     }
 
-    const filtered = allEntries.filter((e) => e.date >= startStr && e.date <= endStr);
+    const filtered = allEntries.filter((e) => e.date >= startStr);
     filtered.sort((a, b) => a.date.localeCompare(b.date));
     setEntries(filtered);
   }, [period]);
@@ -45,11 +44,14 @@ export function GraphPage() {
   }, [loadEntries]);
 
   const stats = calculateStats(entries);
+  const { start } = getDateRangeForPeriod(period);
+  const periodLabel = `${format(start, 'M/d')} ~ ${format(new Date(), 'M/d')}`;
 
   return (
     <div className={style.page}>
       <PeriodToggle period={period} onChange={setPeriod} />
-      <WeightGraph entries={entries} stats={stats} goal={goal} />
+      <div className={style.periodRange}>{periodLabel}</div>
+      <WeightGraph entries={entries} stats={stats} goal={goal} period={period} />
     </div>
   );
 }
