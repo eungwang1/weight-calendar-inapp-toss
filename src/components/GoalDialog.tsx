@@ -7,13 +7,16 @@ import style from './GoalDialog.module.css';
 
 interface Props {
   initial?: GoalConfig;
+  latestWeight?: number | null;
   onSave: (config: GoalConfig) => void;
   onClose: () => void;
 }
 
-export function GoalDialog({ initial, onSave, onClose }: Props) {
+export function GoalDialog({ initial, latestWeight, onSave, onClose }: Props) {
+  const [startWeight, setStartWeight] = useState(
+    initial?.startWeight?.toString() ?? latestWeight?.toString() ?? ''
+  );
   const [targetWeight, setTargetWeight] = useState(initial?.targetWeight?.toString() ?? '');
-  const [startWeight, setStartWeight] = useState(initial?.startWeight?.toString() ?? '');
 
   const adjustStart = (delta: number) => {
     const cur = parseFloat(startWeight) || 0;

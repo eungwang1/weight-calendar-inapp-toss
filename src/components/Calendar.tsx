@@ -13,12 +13,13 @@ interface Props {
   onPrev: () => void;
   onNext: () => void;
   onDateClick: (dateStr: string) => void;
+  headerRight?: React.ReactNode;
 }
 
 const WEEKDAYS = ['월', '화', '수', '목', '금', '토', '일'];
 const SWIPE_THRESHOLD = 50;
 
-export function Calendar({ year, month, monthData, selectedDate, onPrev, onNext, onDateClick }: Props) {
+export function Calendar({ year, month, monthData, selectedDate, onPrev, onNext, onDateClick, headerRight }: Props) {
   const days = getCalendarDays(year, month);
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
@@ -76,13 +77,16 @@ export function Calendar({ year, month, monthData, selectedDate, onPrev, onNext,
   return (
     <div>
       <div className={style.header}>
-        <button className={style.navBtn} onClick={handlePrev}>
-          ‹
-        </button>
-        <span className={style.title}>{formatMonthTitle(year, month)}</span>
-        <button className={style.navBtn} onClick={handleNext}>
-          ›
-        </button>
+        <div className={style.headerLeft}>
+          <button className={style.navBtn} onClick={handlePrev}>
+            ‹
+          </button>
+          <span className={style.title}>{formatMonthTitle(year, month)}</span>
+          <button className={style.navBtn} onClick={handleNext}>
+            ›
+          </button>
+        </div>
+        {headerRight}
       </div>
 
       <div className={style.weekdays}>

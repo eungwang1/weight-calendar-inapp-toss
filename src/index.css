@@ -56,10 +56,11 @@ input, textarea {
 
 .app-root {
   width: 100%;
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   padding-top: var(--safe-top);
+  padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
 }
 
 button {

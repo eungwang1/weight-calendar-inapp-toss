@@ -1,47 +1,53 @@
 .tabBar {
   display: flex;
-  position: sticky;
-  top: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   background-color: #ffffff;
+  border-top: 0.5px solid #F2F4F6;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.04);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .tab {
   flex: 1;
-  padding: 14px 0;
-  text-align: center;
-  font-size: 15px;
-  font-weight: 600;
-  color: #b0b8c1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 0 6px;
   border: none;
   background: none;
   cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
+  outline: none;
   -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.tab:focus,
+.tab:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .tab:active {
-  background-color: #f8f9fa;
+  opacity: 0.5;
 }
 
-.tab.active {
-  color: #191f28;
+.label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #B0B8C1;
+  letter-spacing: -0.01em;
+  line-height: 1;
 }
 
-.tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 20%;
-  right: 20%;
-  height: 2.5px;
-  background-color: #191f28;
-  border-radius: 2px;
-  animation: tabIndicator 0.2s ease;
-}
-
-@keyframes tabIndicator {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+.active .label {
+  color: #191F28;
+  font-weight: 700;
 }

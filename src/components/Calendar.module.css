@@ -5,6 +5,11 @@
   padding: 16px 20px 8px;
 }
 
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
 .title {
   font-size: 18px;
   font-weight: 700;

@@ -21,6 +21,7 @@ export function RecordPage() {
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   });
   const [editingDate, setEditingDate] = useState<string | null>(null);
+  const [showGoalDialog, setShowGoalDialog] = useState(false);
 
   const entries = getAllEntries();
   const latestWeight = entries.length > 0 ? entries[entries.length - 1]!.weight : null;
@@ -37,9 +38,27 @@ export function RecordPage() {
     setViewingDate(dateStr);
   };
 
+  const goalChip = !goal ? (
+    <button
+      className={style.goalChip}
+      onClick={() => { haptic('tap'); setShowGoalDialog(true); }}
+    >
+      목표 설정
+    </button>
+  ) : null;
+
   return (
     <div className={style.page}>
-      <GoalBanner goal={goal} goalType={goalType} progress={progress} onSaveGoal={saveGoal} />
+      <GoalBanner
+        goal={goal}
+        goalType={goalType}
+        progress={progress}
+        latestWeight={latestWeight}
+        onSaveGoal={saveGoal}
+        showDialog={showGoalDialog}
+        onOpenDialog={() => setShowGoalDialog(true)}
+        onCloseDialog={() => setShowGoalDialog(false)}
+      />
 
       <Calendar
         year={year}
@@ -49,6 +68,7 @@ export function RecordPage() {
         onPrev={goPrev}
         onNext={goNext}
         onDateClick={handleDateClick}
+        headerRight={goalChip}
       />
 
       {viewingDate && (
@@ -70,7 +90,12 @@ export function RecordPage() {
               setEditingDate(targetDate);
             }}
           >
-            + 기록하기
+            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ display: 'block', position: 'relative', top: -1 }}>
+                <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              기록하기
+            </span>
           </Button>
         </div>
       )}

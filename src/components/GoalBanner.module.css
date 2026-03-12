@@ -1,3 +1,27 @@
+.setupRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.setupRow:active {
+  background-color: #f8f9fa;
+}
+
+.setupLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3182F6;
+}
+
+.setupArrow {
+  font-size: 18px;
+  color: #B0B8C1;
+}
+
 .banner {
   margin: 12px 20px 8px;
   padding: 16px 18px;
