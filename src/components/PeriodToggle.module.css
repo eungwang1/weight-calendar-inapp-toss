@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  gap: 8px;
+  padding: 16px 20px 12px;
+}
+
+.btn {
+  height: 34px;
+  padding: 0 18px;
+  border: 1.5px solid #e5e8eb;
+  border-radius: 17px;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b95a1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn.active {
+  border-color: #3182F6;
+  background-color: #3182F6;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(49, 130, 246, 0.25);
+}

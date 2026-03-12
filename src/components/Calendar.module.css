@@ -1,0 +1,75 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #191f28;
+}
+
+.navBtn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: #8b95a1;
+  border-radius: 12px;
+  transition: transform 0.1s, background-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.navBtn:active {
+  background-color: #f2f4f6;
+  transform: scale(0.9);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 8px 12px 4px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b0b8c1;
+  padding: 4px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0 12px 12px;
+  gap: 0;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+/* 월 전환 슬라이드 애니메이션 */
+.slideInFromLeft {
+  animation: slideFromLeft 0.25s ease-out;
+}
+
+.slideInFromRight {
+  animation: slideFromRight 0.25s ease-out;
+}
+
+@keyframes slideFromLeft {
+  from { transform: translateX(-40px); opacity: 0.3; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideFromRight {
+  from { transform: translateX(40px); opacity: 0.3; }
+  to { transform: translateX(0); opacity: 1; }
+}
