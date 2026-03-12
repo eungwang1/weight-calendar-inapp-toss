@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom/client';
 import { TDSMobileAITProvider } from '@toss/tds-mobile-ait';
 import './index.css';
 import App from './App';
-import { seedIfEmpty } from './utils/seedData';
 
 // 브라우저 환경에서 네이티브 브릿지 상수를 모킹하여 TDSMobileAITProvider가 동작하도록 함
 if (typeof window !== 'undefined' && !window.__CONSTANT_HANDLER_MAP) {
@@ -35,9 +34,6 @@ if (typeof window !== 'undefined' && !window.__CONSTANT_HANDLER_MAP) {
     'showAppsInTossAdMob_isSupported': false,
   };
 }
-
-// 개발용 시드 데이터 삽입 (localStorage에 'seeded' 플래그가 없을 때만)
-seedIfEmpty();
 
 const rootEl = document.getElementById('root');
 if (rootEl) {

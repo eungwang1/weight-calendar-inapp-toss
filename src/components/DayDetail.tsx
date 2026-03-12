@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { DayRecord } from '../types';
 import { getDayLabel } from '../utils/date';
 import { usePhotoPicker } from '../hooks/usePhotoPicker';
+import { useBackHandler } from '../hooks/useBackHandler';
+import { PhotoViewer } from './PhotoViewer';
 import style from './DayDetail.module.css';
 
 interface Props {
@@ -12,6 +14,9 @@ interface Props {
 function EntryCard({ entry }: { entry: NonNullable<DayRecord['morning']> }) {
   const { loadPhoto } = usePhotoPicker();
   const [photos, setPhotos] = useState<Record<string, string>>({});
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+  const closeViewer = useCallback(() => setViewerIndex(null), []);
+  useBackHandler(viewerIndex != null, closeViewer);
 
   useEffect(() => {
     entry.photoKeys.forEach(async (key) => {
@@ -23,6 +28,7 @@ function EntryCard({ entry }: { entry: NonNullable<DayRecord['morning']> }) {
   }, [entry.photoKeys]);
 
   const isMorning = entry.timeOfDay === 'morning';
+  const loadedPhotos = entry.photoKeys.map((key) => photos[key]).filter(Boolean) as string[];
 
   return (
     <div className={style.entryCard}>
@@ -38,13 +44,26 @@ function EntryCard({ entry }: { entry: NonNullable<DayRecord['morning']> }) {
       {entry.memo && <div className={style.memo}>{entry.memo}</div>}
       {entry.photoKeys.length > 0 && (
         <div className={style.photos}>
-          {entry.photoKeys.map(
-            (key) =>
-              photos[key] && (
-                <img key={key} className={style.photo} src={photos[key]} alt="" />
-              )
+          {entry.photoKeys.map((key, i) =>
+            photos[key] ? (
+              <img
+                key={key}
+                className={style.photo}
+                src={photos[key]}
+                alt=""
+                onClick={() => setViewerIndex(loadedPhotos.indexOf(photos[key]!))}
+              />
+            ) : null
           )}
         </div>
+      )}
+
+      {viewerIndex != null && loadedPhotos.length > 0 && (
+        <PhotoViewer
+          photos={loadedPhotos}
+          initialIndex={viewerIndex}
+          onClose={() => setViewerIndex(null)}
+        />
       )}
     </div>
   );

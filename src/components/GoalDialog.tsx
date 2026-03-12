@@ -9,10 +9,11 @@ interface Props {
   initial?: GoalConfig;
   latestWeight?: number | null;
   onSave: (config: GoalConfig) => void;
+  onDelete?: () => void;
   onClose: () => void;
 }
 
-export function GoalDialog({ initial, latestWeight, onSave, onClose }: Props) {
+export function GoalDialog({ initial, latestWeight, onSave, onDelete, onClose }: Props) {
   const [startWeight, setStartWeight] = useState(
     initial?.startWeight?.toString() ?? latestWeight?.toString() ?? ''
   );
@@ -109,6 +110,15 @@ export function GoalDialog({ initial, latestWeight, onSave, onClose }: Props) {
             </div>
           </div>
         </div>
+
+        {initial && onDelete && (
+          <button
+            className={style.deleteBtn}
+            onClick={() => { haptic('tap'); onDelete(); onClose(); }}
+          >
+            목표 삭제
+          </button>
+        )}
       </div>
     </BottomSheet>
   );

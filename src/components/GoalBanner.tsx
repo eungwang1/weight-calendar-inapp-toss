@@ -11,12 +11,13 @@ interface Props {
   progress: number | null;
   latestWeight: number | null;
   onSaveGoal: (config: GoalConfig) => void;
+  onDeleteGoal: () => void;
   showDialog: boolean;
   onOpenDialog: () => void;
   onCloseDialog: () => void;
 }
 
-export function GoalBanner({ goal, goalType, progress, latestWeight, onSaveGoal, showDialog, onOpenDialog, onCloseDialog }: Props) {
+export function GoalBanner({ goal, goalType, progress, latestWeight, onSaveGoal, onDeleteGoal, showDialog, onOpenDialog, onCloseDialog }: Props) {
   const [showCelebration, setShowCelebration] = useState(false);
   useBackHandler(showDialog, onCloseDialog);
 
@@ -91,6 +92,10 @@ export function GoalBanner({ goal, goalType, progress, latestWeight, onSaveGoal,
           latestWeight={latestWeight}
           onSave={(config) => {
             onSaveGoal(config);
+            onCloseDialog();
+          }}
+          onDelete={() => {
+            onDeleteGoal();
             onCloseDialog();
           }}
           onClose={onCloseDialog}

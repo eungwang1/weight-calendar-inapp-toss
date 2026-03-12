@@ -14,7 +14,7 @@ export function RecordPage() {
   const { year, month, goNext, goPrev } = useCalendarNavigation();
   const { monthData, saveEntry, deleteEntry, getDayRecord, getAllEntries } =
     useWeightStorage(year, month);
-  const { goal, goalType, saveGoal, getProgress } = useGoalWeight();
+  const { goal, goalType, saveGoal, clearGoal, getProgress } = useGoalWeight();
 
   const [viewingDate, setViewingDate] = useState<string | null>(() => {
     const today = new Date();
@@ -55,6 +55,7 @@ export function RecordPage() {
         progress={progress}
         latestWeight={latestWeight}
         onSaveGoal={saveGoal}
+        onDeleteGoal={clearGoal}
         showDialog={showGoalDialog}
         onOpenDialog={() => setShowGoalDialog(true)}
         onCloseDialog={() => setShowGoalDialog(false)}

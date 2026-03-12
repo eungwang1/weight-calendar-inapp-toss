@@ -60,7 +60,7 @@ input, textarea {
   display: flex;
   flex-direction: column;
   padding-top: var(--safe-top);
-  padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 56px;
 }
 
 button {

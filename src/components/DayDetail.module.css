@@ -163,6 +163,13 @@
   height: 60px;
   border-radius: 10px;
   object-fit: cover;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s;
+}
+
+.photo:active {
+  transform: scale(0.93);
 }
 
 .divider {

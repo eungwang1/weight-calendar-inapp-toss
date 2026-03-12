@@ -58,7 +58,7 @@ async function pickPhotoNative(): Promise<string | null> {
     const sdk = await import('@apps-in-toss/web-framework');
 
     // fetchAlbumPhotos: 앨범에서 사진 1장 선택, base64로 받기
-    const photos = await sdk.fetchAlbumPhotos({ maxCount: 1, maxWidth: 800, base64: true });
+    const photos = await sdk.fetchAlbumPhotos({ maxCount: 1, maxWidth: 600, base64: true });
     if (!photos || photos.length === 0) return null;
 
     const photo = photos[0]!;
@@ -82,7 +82,7 @@ export function usePhotoPicker() {
       // 로컬 브라우저 → file input + canvas 리사이즈
       const file = await pickFileBrowser();
       if (!file) return null;
-      dataUri = await resizeImage(file, 800, 0.6);
+      dataUri = await resizeImage(file, 600, 0.5);
     }
 
     if (!dataUri) return null;

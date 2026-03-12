@@ -45,7 +45,7 @@ export function PhotoGrid({ photoKeys, onPhotoKeysChange }: Props) {
 
   return (
     <div className={style.container}>
-      <span className={style.label}>사진 (선택사항)</span>
+      <span className={style.label}>사진 ({photoKeys.length}/4)</span>
       <div className={style.grid}>
         {photoKeys.map((key) => (
           <div key={key} className={style.photoItem}>

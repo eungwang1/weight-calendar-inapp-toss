@@ -17,7 +17,7 @@ export default defineConfig({
   outdir: 'dist',
   brand: {
     displayName: '몸무게 캘린더',
-    icon: '',
+    icon: '/app-icon.png',
     primaryColor: '#3182F6',
     bridgeColorMode: 'basic',
   },
