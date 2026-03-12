@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { BottomSheet, Button } from '@toss/tds-mobile';
 import type { DayRecord, WeightEntry } from '../types';
 import { getDayLabel } from '../utils/date';
 import { haptic } from '../utils/haptic';
@@ -74,14 +75,20 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
   };
 
   return (
-    <div className={style.overlay} onClick={onClose}>
-      <div className={style.sheet} onClick={(e) => e.stopPropagation()}>
-        <div className={style.handle} />
-
-        <div className={style.dateTitle}>
-          {m}월 {d}일 {dayLabel}요일
-        </div>
-
+    <BottomSheet
+      open
+      onClose={onClose}
+      header={<BottomSheet.Header>{m}월 {d}일 {dayLabel}요일</BottomSheet.Header>}
+      hasTextField
+      cta={
+        <BottomSheet.CTA>
+          <Button color="primary" display="full" size="xlarge" onClick={handleSave}>
+            저장하기
+          </Button>
+        </BottomSheet.CTA>
+      }
+    >
+      <div className={style.content}>
         <div className={style.toggle}>
           <button
             className={`${style.toggleBtn} ${timeOfDay === 'morning' ? style.morningActive : ''}`}
@@ -110,12 +117,12 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
             <span className={style.weightUnit}>kg</span>
           </div>
           <div className={style.adjustBtns}>
-            <button className={style.adjustBtn} onClick={() => adjust(-0.1)}>
+            <Button color="dark" variant="weak" size="small" onClick={() => adjust(-0.1)}>
               -0.1
-            </button>
-            <button className={style.adjustBtn} onClick={() => adjust(0.1)}>
+            </Button>
+            <Button color="dark" variant="weak" size="small" onClick={() => adjust(0.1)}>
               +0.1
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -133,16 +140,12 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
           <PhotoGrid photoKeys={photoKeys} onPhotoKeysChange={setPhotoKeys} />
         </div>
 
-        <button className={style.saveBtn} onClick={handleSave}>
-          저장하기
-        </button>
-
         {isEditing && (
-          <button className={style.deleteBtn} onClick={handleDelete}>
+          <Button color="danger" variant="weak" display="full" size="large" onClick={handleDelete}>
             삭제하기
-          </button>
+          </Button>
         )}
       </div>
-    </div>
+    </BottomSheet>
   );
 }

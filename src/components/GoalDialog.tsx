@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BottomSheet, Button } from '@toss/tds-mobile';
 import type { GoalConfig } from '../types';
 import { format } from '../utils/date';
 import style from './GoalDialog.module.css';
@@ -26,10 +27,27 @@ export function GoalDialog({ initial, onSave, onClose }: Props) {
   };
 
   return (
-    <div className={style.overlay} onClick={onClose}>
-      <div className={style.dialog} onClick={(e) => e.stopPropagation()}>
-        <div className={style.title}>목표 체중 설정</div>
-
+    <BottomSheet
+      open
+      onClose={onClose}
+      header={<BottomSheet.Header>목표 체중 설정</BottomSheet.Header>}
+      hasTextField
+      cta={
+        <BottomSheet.DoubleCTA
+          leftButton={
+            <Button color="dark" variant="weak" display="full" size="xlarge" onClick={onClose}>
+              취소
+            </Button>
+          }
+          rightButton={
+            <Button color="primary" display="full" size="xlarge" onClick={handleSave}>
+              저장
+            </Button>
+          }
+        />
+      }
+    >
+      <div className={style.fields}>
         <div className={style.field}>
           <div className={style.fieldLabel}>현재 체중 (kg)</div>
           <input
@@ -53,16 +71,7 @@ export function GoalDialog({ initial, onSave, onClose }: Props) {
             placeholder="68.0"
           />
         </div>
-
-        <div className={style.buttons}>
-          <button className={style.cancelBtn} onClick={onClose}>
-            취소
-          </button>
-          <button className={style.saveBtn} onClick={handleSave}>
-            저장
-          </button>
-        </div>
       </div>
-    </div>
+    </BottomSheet>
   );
 }

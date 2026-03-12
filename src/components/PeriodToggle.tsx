@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { Button } from '@toss/tds-mobile';
 import type { PeriodType } from '../types';
 import style from './PeriodToggle.module.css';
 
@@ -17,13 +17,15 @@ export function PeriodToggle({ period, onChange }: Props) {
   return (
     <div className={style.container}>
       {OPTIONS.map((opt) => (
-        <button
+        <Button
           key={opt.value}
-          className={clsx(style.btn, period === opt.value && style.active)}
+          color={period === opt.value ? 'primary' : 'dark'}
+          variant={period === opt.value ? 'fill' : 'weak'}
+          size="small"
           onClick={() => onChange(opt.value)}
         >
           {opt.label}
-        </button>
+        </Button>
       ))}
     </div>
   );

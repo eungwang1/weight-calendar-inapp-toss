@@ -47,24 +47,3 @@
   border-radius: 4px;
   transition: width 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 }
-
-.setGoalBtn {
-  margin: 12px 20px 8px;
-  padding: 14px;
-  border: 1.5px dashed #d1d6db;
-  border-radius: 16px;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  color: #8b95a1;
-  width: calc(100% - 40px);
-  text-align: center;
-  transition: transform 0.1s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.setGoalBtn:active {
-  background-color: #f8f9fa;
-  transform: scale(0.98);
-}

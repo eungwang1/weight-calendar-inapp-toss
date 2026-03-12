@@ -1,48 +1,5 @@
-/* ── 오버레이: 페이드인 ── */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0);
-  z-index: 1000;
-  display: flex;
-  align-items: flex-end;
-  animation: overlayFadeIn 0.25s ease forwards;
-}
-
-@keyframes overlayFadeIn {
-  to { background-color: rgba(0, 0, 0, 0.4); }
-}
-
-/* ── 시트: 아래에서 슬라이드업 ── */
-.sheet {
-  width: 100%;
-  background: #ffffff;
-  border-radius: 20px 20px 0 0;
-  padding: 12px 24px calc(20px + env(safe-area-inset-bottom, 0px));
-  max-height: 85vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  transform: translateY(100%);
-  animation: sheetSlideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-}
-
-@keyframes sheetSlideUp {
-  to { transform: translateY(0); }
-}
-
-.handle {
-  width: 36px;
-  height: 4px;
-  background-color: #d1d6db;
-  border-radius: 2px;
-  margin: 0 auto 16px;
-}
-
-.dateTitle {
-  font-size: 18px;
-  font-weight: 700;
-  color: #191f28;
-  margin-bottom: 20px;
+.content {
+  padding: 0 4px;
 }
 
 .toggle {
@@ -131,25 +88,6 @@
   gap: 8px;
 }
 
-.adjustBtn {
-  width: 68px;
-  height: 34px;
-  border: 1px solid #e5e8eb;
-  border-radius: 17px;
-  background: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  color: #4e5968;
-  cursor: pointer;
-  transition: transform 0.1s, background-color 0.1s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.adjustBtn:active {
-  background-color: #f2f4f6;
-  transform: scale(0.95);
-}
-
 .memoSection {
   margin-bottom: 20px;
 }
@@ -181,43 +119,4 @@
 
 .photoSection {
   margin-bottom: 24px;
-}
-
-.saveBtn {
-  width: 100%;
-  height: 52px;
-  border: none;
-  border-radius: 12px;
-  background-color: #3182F6;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 8px;
-  transition: transform 0.1s, background-color 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.saveBtn:active {
-  background-color: #1b64da;
-  transform: scale(0.98);
-}
-
-.deleteBtn {
-  width: 100%;
-  height: 44px;
-  border: none;
-  border-radius: 12px;
-  background: none;
-  color: #f04452;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.1s, background-color 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.deleteBtn:active {
-  background-color: #fff5f5;
-  transform: scale(0.98);
 }

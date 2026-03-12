@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { WeightEntry, DayRecord, MonthData } from '../types';
 import { getItem, setItem, getMonthKey } from '../utils/storage';
-import { format } from '../utils/date';
 import { nanoid } from 'nanoid';
 
 export function useWeightStorage(year: number, month: number) {

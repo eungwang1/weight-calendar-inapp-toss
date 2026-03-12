@@ -1,39 +1,5 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: overlayFadeIn 0.2s ease forwards;
-}
-
-@keyframes overlayFadeIn {
-  to { background-color: rgba(0, 0, 0, 0.4); }
-}
-
-.dialog {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 24px;
-  width: 100%;
-  max-width: 320px;
-  transform: scale(0.9);
-  opacity: 0;
-  animation: dialogPopIn 0.25s cubic-bezier(0.32, 0.72, 0, 1) 0.05s forwards;
-}
-
-@keyframes dialogPopIn {
-  to { transform: scale(1); opacity: 1; }
-}
-
-.title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #191f28;
-  margin-bottom: 20px;
+.fields {
+  padding: 4px 0;
 }
 
 .field {
@@ -68,47 +34,4 @@
 
 .input:focus {
   border-color: #3182F6;
-}
-
-.buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.cancelBtn {
-  flex: 1;
-  height: 48px;
-  border: none;
-  border-radius: 12px;
-  background-color: #f2f4f6;
-  color: #4e5968;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.1s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.cancelBtn:active {
-  transform: scale(0.97);
-}
-
-.saveBtn {
-  flex: 1;
-  height: 48px;
-  border: none;
-  border-radius: 12px;
-  background-color: #3182F6;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.1s, background-color 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.saveBtn:active {
-  background-color: #1b64da;
-  transform: scale(0.97);
 }

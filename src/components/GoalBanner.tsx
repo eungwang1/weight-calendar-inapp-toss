@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Button } from '@toss/tds-mobile';
 import type { GoalConfig } from '../types';
 import { useBackHandler } from '../hooks/useBackHandler';
 import style from './GoalBanner.module.css';
@@ -18,9 +19,17 @@ export function GoalBanner({ goal, progress, onSaveGoal }: Props) {
   if (!goal) {
     return (
       <>
-        <button className={style.setGoalBtn} onClick={() => setShowDialog(true)}>
-          목표 체중 설정하기
-        </button>
+        <div style={{ padding: '12px 20px 8px' }}>
+          <Button
+            color="dark"
+            variant="weak"
+            display="full"
+            size="large"
+            onClick={() => setShowDialog(true)}
+          >
+            목표 체중 설정하기
+          </Button>
+        </div>
         {showDialog && (
           <GoalDialog
             onSave={(config) => {
