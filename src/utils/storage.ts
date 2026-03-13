@@ -41,6 +41,35 @@ export async function removeItem(key: string): Promise<void> {
   }
 }
 
+export async function clearAll(): Promise<void> {
+  try {
+    if (isNativeBridge()) {
+      // Native Storage에 clear가 없을 수 있으므로 fallback
+      try {
+        await (Storage as any).clear();
+      } catch {
+        // clear 미지원 시 알려진 키 패턴 삭제
+        await removeKnownKeys();
+      }
+    } else {
+      localStorage.clear();
+    }
+  } catch (e) {
+    console.error('Storage clearAll error:', e);
+  }
+}
+
+async function removeKnownKeys(): Promise<void> {
+  // 최근 2년치 월별 데이터 삭제
+  const now = new Date();
+  for (let i = 0; i < 24; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    await removeItem(getMonthKey(d.getFullYear(), d.getMonth() + 1));
+  }
+  await removeItem('goal');
+  await removeItem('onboarding_done');
+}
+
 export function getMonthKey(year: number, month: number): string {
   const m = String(month).padStart(2, '0');
   return `weight:${year}-${m}`;

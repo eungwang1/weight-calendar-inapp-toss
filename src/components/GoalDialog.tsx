@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BottomSheet, Button } from '@toss/tds-mobile';
+import { BottomSheet, Button, useToast } from '@toss/tds-mobile';
 import type { GoalConfig } from '../types';
 import { format } from '../utils/date';
 import { haptic } from '../utils/haptic';
@@ -14,6 +14,7 @@ interface Props {
 }
 
 export function GoalDialog({ initial, latestWeight, onSave, onDelete, onClose }: Props) {
+  const toast = useToast();
   const [startWeight, setStartWeight] = useState(
     initial?.startWeight?.toString() ?? latestWeight?.toString() ?? ''
   );
@@ -34,8 +35,14 @@ export function GoalDialog({ initial, latestWeight, onSave, onDelete, onClose }:
   const handleSave = () => {
     const target = parseFloat(targetWeight);
     const start = parseFloat(startWeight);
-    if (isNaN(target) || isNaN(start) || target <= 0 || start <= 0) {
+    if (isNaN(start) || start <= 0) {
       haptic('error');
+      toast.openToast('현재 체중을 입력해 주세요');
+      return;
+    }
+    if (isNaN(target) || target <= 0) {
+      haptic('error');
+      toast.openToast('목표 체중을 입력해 주세요');
       return;
     }
 

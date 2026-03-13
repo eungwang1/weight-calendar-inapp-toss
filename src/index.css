@@ -9,9 +9,6 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
 
-  /* iOS safe area */
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 html {
@@ -59,8 +56,8 @@ input, textarea {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding-top: var(--safe-top);
-  padding-bottom: 56px;
+  padding-top: 0;
+  padding-bottom: 44px;
 }
 
 button {

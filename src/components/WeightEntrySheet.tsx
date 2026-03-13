@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BottomSheet, Button } from '@toss/tds-mobile';
+import { BottomSheet, Button, useToast } from '@toss/tds-mobile';
 import type { DayRecord, WeightEntry } from '../types';
 import { getDayLabel } from '../utils/date';
 import { haptic } from '../utils/haptic';
@@ -23,6 +23,7 @@ interface DraftEntry {
 
 export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose }: Props) {
   useBackHandler(true, onClose);
+  const toast = useToast();
 
   const [timeOfDay, setTimeOfDay] = useState<'morning' | 'evening'>('morning');
   const [draft, setDraft] = useState<Record<'morning' | 'evening', DraftEntry>>(() => {
@@ -62,6 +63,7 @@ export function WeightEntrySheet({ dateStr, dayRecord, onSave, onDelete, onClose
 
     if (!hasMorning && !hasEvening) {
       haptic('error');
+      toast.openToast('체중을 입력해 주세요');
       return;
     }
 

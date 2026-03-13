@@ -9,3 +9,28 @@
   color: #8b95a1;
   margin-bottom: 8px;
 }
+
+.resetBtn {
+  display: block;
+  margin: 32px auto 0;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #B0B8C1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+}
+
+.resetBtn:focus,
+.resetBtn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.resetBtn:active {
+  color: #F04452;
+}

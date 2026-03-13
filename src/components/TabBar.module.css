@@ -9,7 +9,7 @@
   border-top: 0.5px solid #F2F4F6;
   border-radius: 16px 16px 0 0;
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.04);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: 0;
 }
 
 .tab {
