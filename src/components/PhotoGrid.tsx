@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useDialog } from '@toss/tds-mobile';
 import { usePhotoPicker } from '../hooks/usePhotoPicker';
 import style from './PhotoGrid.module.css';
 
@@ -9,7 +10,9 @@ interface Props {
 
 export function PhotoGrid({ photoKeys, onPhotoKeysChange }: Props) {
   const { addPhoto, loadPhoto, deletePhoto } = usePhotoPicker();
+  const { openConfirm } = useDialog();
   const [photos, setPhotos] = useState<Record<string, string>>({});
+  const photoPermissionGranted = useRef(false);
 
   useEffect(() => {
     photoKeys.forEach(async (key) => {
@@ -24,6 +27,18 @@ export function PhotoGrid({ photoKeys, onPhotoKeysChange }: Props) {
 
   const handleAdd = async () => {
     if (photoKeys.length >= 4) return;
+
+    if (!photoPermissionGranted.current) {
+      const confirmed = await openConfirm({
+        title: '사진 접근 권한 안내',
+        description: '기록에 사진을 첨부하기 위해\n사진 앨범 접근 권한이 필요해요.',
+        confirmButton: '허용',
+        cancelButton: '취소',
+      });
+      if (!confirmed) return;
+      photoPermissionGranted.current = true;
+    }
+
     const id = await addPhoto();
     if (!id) return;
     const data = await loadPhoto(id);

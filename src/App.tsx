@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { RecordPage } from './pages/RecordPage';
 import { GraphPage } from './pages/GraphPage';
+import { InfoPage } from './pages/InfoPage';
 import { useBackHandler } from './hooks/useBackHandler';
 import { TabBar } from './components/TabBar';
 import { Onboarding } from './components/Onboarding';
@@ -28,7 +29,9 @@ function App() {
   return (
     <div className="app-root">
       <div style={{ flex: 1, overflow: 'auto' }}>
-        {activeTab === 0 ? <RecordPage /> : <GraphPage />}
+        {activeTab === 0 && <RecordPage />}
+        {activeTab === 1 && <GraphPage />}
+        {activeTab === 2 && <InfoPage />}
       </div>
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
     </div>

@@ -1,17 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDialog } from '@toss/tds-mobile';
 import type { WeightEntry, PeriodType } from '../types';
 import { useGoalWeight } from '../hooks/useGoalWeight';
 import { loadMonthData, collectEntriesFromMonthData } from '../hooks/useWeightStorage';
 import { getDateRangeForPeriod, format } from '../utils/date';
 import { calculateStats } from '../utils/stats';
-import { clearAll } from '../utils/storage';
 import { PeriodToggle } from '../components/PeriodToggle';
 import { WeightGraph } from '../components/WeightGraph';
 import style from './GraphPage.module.css';
 
 export function GraphPage() {
-  const { openConfirm } = useDialog();
   const [period, setPeriod] = useState<PeriodType>('1month');
   const [entries, setEntries] = useState<WeightEntry[]>([]);
   const { goal } = useGoalWeight();
@@ -55,22 +52,6 @@ export function GraphPage() {
       <PeriodToggle period={period} onChange={setPeriod} />
       <div className={style.periodRange}>{periodLabel}</div>
       <WeightGraph entries={entries} stats={stats} goal={goal} period={period} />
-
-      <button
-        className={style.resetBtn}
-        onClick={() => {
-          openConfirm({
-            title: '데이터를 초기화할까요?',
-            description: '모든 기록, 사진, 목표가 삭제돼요.\n이 작업은 되돌릴 수 없어요.',
-            confirmButton: '초기화',
-            cancelButton: '취소',
-          }).then((confirmed) => {
-            if (confirmed) clearAll().then(() => window.location.reload());
-          });
-        }}
-      >
-        데이터 전체 초기화
-      </button>
     </div>
   );
 }

@@ -60,10 +60,13 @@ input, textarea {
   padding-bottom: 44px;
 }
 
+* {
+  touch-action: manipulation;
+}
+
 button {
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 
 input, textarea {
